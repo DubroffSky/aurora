@@ -3,48 +3,46 @@
 {% block title %}Main - Aurora Store{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-8 mx-auto text-center">
-        <h1 class="display-4 mb-4">Welcome to Aurora Store</h1>
-        
-        {% if user.is_authenticated %}
-            <div class="alert alert-success">
-                <h4>You are logged in as {{ user.username }}</h4>
-                <p>Now you can view products and make orders.</p>
-            </div>
-        {% else %}
-            <div class="alert alert-info">
-                <h4>Welcome!</h4>
-                <p>To access the full functionality of the store, please 
-                   <a href="{% url 'aurora_store:login' %}" class="alert-link">login</a> 
-                   or 
-                   <a href="{% url 'aurora_store:register' %}" class="alert-link">register</a>.</p>
-            </div>
-        {% endif %}
-        
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">🛍️ Products</h5>
-                        <p class="card-text">View the catalog of products and their prices.</p>
-                    </div>
+<div class="text-center">
+    <h1 class="display-4 mb-4">Welcome to Aurora Store</h1>
+    
+    {% if user.is_authenticated %}
+        <div class="alert alert-success">
+            <h4>You are logged in as {{ user.username }}</h4>
+            <p>Now you can view products and make orders.</p>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <h4>Welcome!</h4>
+            <p>To access the full functionality of the store, please 
+               <a href="{% url 'aurora_store:login' %}" class="text-decoration-none">login</a> 
+               or 
+               <a href="{% url 'aurora_store:register' %}" class="text-decoration-none">register</a>.</p>
+        </div>
+    {% endif %}
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🛍️ Products</h5>
+                    <p class="card-text">View the catalog of products and their prices.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">📦 Orders</h5>
-                        <p class="card-text">Create orders and track their status.</p>
-                    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">📦 Orders</h5>
+                    <p class="card-text">Create orders and track their status.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">👤 Profile</h5>
-                        <p class="card-text">Manage your profile and settings.</p>
-                    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">👤 Profile</h5>
+                    <p class="card-text">Manage your profile and settings.</p>
                 </div>
             </div>
         </div>

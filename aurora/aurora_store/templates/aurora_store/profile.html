@@ -7,13 +7,13 @@
     <div class="col-md-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title mb-0">Profile</h3>
+                <h3 class="card-title">Profile</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <h5>User information</h5>
-                        <table class="table table-borderless">
+                        <table class="table">
                             <tr>
                                 <td><strong>Username:</strong></td>
                                 <td>{{ user.username }}</td>
@@ -31,12 +31,12 @@
                                 <td>{{ user.last_login|date:"d.m.Y H:i"|default:"Never" }}</td>
                             </tr>
                             <tr>
-                                <td><strong>Статус:</strong></td>
+                                <td><strong>Status:</strong></td>
                                 <td>
                                     {% if user.is_staff %}
-                                        <span class="badge bg-warning">Admin</span>
+                                        <span class="badge badge-warning">Admin</span>
                                     {% else %}
-                                        <span class="badge bg-success">User</span>
+                                        <span class="badge badge-success">User</span>
                                     {% endif %}
                                 </td>
                             </tr>
