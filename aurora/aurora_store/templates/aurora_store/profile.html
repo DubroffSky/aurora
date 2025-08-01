@@ -1,0 +1,61 @@
+{% extends 'aurora_store/base.html' %}
+
+{% block title %}Profile - Aurora Store{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Profile</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>User information</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Username:</strong></td>
+                                <td>{{ user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email:</strong></td>
+                                <td>{{ user.email|default:"Not specified" }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Registration date:</strong></td>
+                                <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last login:</strong></td>
+                                <td>{{ user.last_login|date:"d.m.Y H:i"|default:"Never" }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Статус:</strong></td>
+                                <td>
+                                    {% if user.is_staff %}
+                                        <span class="badge bg-warning">Admin</span>
+                                    {% else %}
+                                        <span class="badge bg-success">User</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Actions</h5>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'aurora_store:home' %}" class="btn btn-outline-primary">
+                                Return to the main page
+                            </a>
+                            <a href="{% url 'aurora_store:logout' %}" class="btn btn-outline-danger">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
