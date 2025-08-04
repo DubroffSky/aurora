@@ -1,48 +1,77 @@
 {% extends 'aurora_store/base.html' %}
 
-{% block title %}Main - Aurora Store{% endblock %}
+{% block title %}Main - Aurora Project{% endblock %}
 
 {% block content %}
 <div class="text-center">
-    <h1 class="display-4 mb-4">Welcome to Aurora Store</h1>
+    <h1 class="display-4">Welcome to Aurora Project</h1>
+    <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">Team Project and Task Management System</p>
     
     {% if user.is_authenticated %}
         <div class="alert alert-success">
-            <h4>You are logged in as {{ user.username }}</h4>
-            <p>Now you can view products and make orders.</p>
+            <h4>Welcome back, {{ user.username }}!</h4>
+            <p>You can now manage your projects and tasks with your team.</p>
         </div>
     {% else %}
         <div class="alert alert-info">
-            <h4>Welcome!</h4>
-            <p>To access the full functionality of the store, please 
+            <h4>Welcome to Aurora Project!</h4>
+            <p>To access the full functionality of the project management system, please 
                <a href="{% url 'aurora_store:login' %}" class="text-decoration-none">login</a> 
                or 
                <a href="{% url 'aurora_store:register' %}" class="text-decoration-none">register</a>.</p>
         </div>
     {% endif %}
     
-    <div class="row mt-5">
+    <div class="row" style="margin-top: 2rem;">
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">🛍️ Products</h5>
-                    <p class="card-text">View the catalog of products and their prices.</p>
+                    <h5 class="card-title">📋 Tasks</h5>
+                    <p class="card-text">Create, assign, and track tasks across your projects. Monitor progress and deadlines.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'aurora_store:tasks_list' %}" class="btn btn-primary">View Tasks</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">📦 Orders</h5>
-                    <p class="card-text">Create orders and track their status.</p>
+                    <h5 class="card-title">🏗️ Projects</h5>
+                    <p class="card-text">Organize your work into projects. Manage team members, priorities, and project status.</p>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="{% url 'aurora_store:projects_list' %}" class="btn btn-primary">View Projects</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">👤 Profile</h5>
-                    <p class="card-text">Manage your profile and settings.</p>
+                    <h5 class="card-title">📅 Calendar</h5>
+                    <p class="card-text">Visualize your tasks and deadlines in a calendar view for better planning.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'aurora_store:calendar' %}" class="btn btn-primary">View Calendar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top: 2rem;">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">👥 Team Collaboration</h5>
+                    <p class="card-text">Work together with your team members. Assign tasks, share project updates, and track collective progress.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Progress Tracking</h5>
+                    <p class="card-text">Monitor project progress, track task completion, and stay on top of deadlines with our intuitive dashboard.</p>
                 </div>
             </div>
         </div>

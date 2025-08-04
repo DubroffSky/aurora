@@ -1,0 +1,85 @@
+{% extends 'aurora_store/base.html' %}
+
+{% block title %}Tasks - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">My Tasks</h3>
+                <a href="{% url 'aurora_store:task_create' %}" class="btn btn-primary">Create New Task</a>
+            </div>
+            <div class="card-body">
+                {% if tasks %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Project</th>
+                                <th>Assigned To</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                                <td>
+                                    <strong>{{ task.title }}</strong>
+                                    {% if task.description %}
+                                        <br><small>{{ task.description|truncatewords:10 }}</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">{{ task.project.title }}</span>
+                                </td>
+                                <td>
+                                    {% if task.assigned_to %}
+                                        {{ task.assigned_to.username }}
+                                    {% else %}
+                                        <span>Unassigned</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge badge-{% if task.priority == 'urgent' %}danger{% elif task.priority == 'high' %}warning{% elif task.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                        {{ task.get_priority_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% elif task.status == 'review' %}info{% else %}secondary{% endif %}">
+                                        {{ task.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if task.due_date %}
+                                        {{ task.due_date|date:"M d, Y H:i" }}
+                                        {% if task.is_overdue %}
+                                            <br><small style="color: red;">Overdue!</small>
+                                        {% endif %}
+                                    {% else %}
+                                        <span>No due date</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'aurora_store:task_edit' task.id %}" class="btn btn-outline-primary">Edit</a>
+                                    <a href="{% url 'aurora_store:task_delete' task.id %}" class="btn btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="text-center">
+                        <h4>No tasks found</h4>
+                        <p>Create your first task to get started!</p>
+                        <a href="{% url 'aurora_store:task_create' %}" class="btn btn-primary">Create Task</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

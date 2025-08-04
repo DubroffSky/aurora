@@ -148,3 +148,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - displays email in the console
+DEFAULT_FROM_EMAIL = 'noreply@taskflow.com'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
+# Later for production use:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'  # or another SMTP server
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'my-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'my-app-password'

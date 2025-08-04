@@ -1,0 +1,88 @@
+{% extends 'aurora_store/base.html' %}
+
+{% block title %}Projects - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Projects Management</h3>
+                <a href="{% url 'aurora_store:project_create' %}" class="btn btn-primary">New Project</a>
+            </div>
+            <div class="card-body">
+                {% if projects %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Owner</th>
+                                <th>Members</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Tasks Count</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr>
+                                <td>
+                                    <strong>{{ project.title }}</strong>
+                                    {% if project.description %}
+                                        <br><small>{{ project.description|truncatewords:10 }}</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">{{ project.owner.username }}</span>
+                                </td>
+                                <td>
+                                    {% if project.members.all %}
+                                        {% for member in project.members.all %}
+                                            <span class="badge badge-secondary">{{ member.username }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span>No members yet</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge badge-{% if project.priority == 'urgent' %}danger{% elif project.priority == 'high' %}warning{% elif project.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                        {{ project.get_priority_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-{% if project.status == 'completed' %}success{% elif project.status == 'active' %}warning{% elif project.status == 'on_hold' %}info{% else %}secondary{% endif %}">
+                                        {{ project.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if project.due_date %}
+                                        {{ project.due_date|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        <span>No due date</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge badge-primary">{{ project.tasks.count }}</span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'aurora_store:project_detail' project.id %}" class="btn btn-outline-info">View</a>
+                                    <a href="{% url 'aurora_store:project_edit' project.id %}" class="btn btn-outline-primary">Edit</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="text-center">
+                        <h4>No projects found</h4>
+                        <p>Create your first project to get started!</p>
+                        <a href="{% url 'aurora_store:project_create' %}" class="btn btn-primary">Create Project</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

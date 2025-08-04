@@ -1,0 +1,171 @@
+{% extends 'aurora_store/base.html' %}
+
+{% block title %}{{ project.title }} - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title">{{ project.title }}</h3>
+                <a href="{% url 'aurora_store:project_edit' project.id %}" class="btn btn-outline-primary">Edit Project</a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Project Details</h5>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Owner:</strong></td>
+                                <td>{{ project.owner.username }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Priority:</strong></td>
+                                <td>
+                                    <span class="badge badge-{% if project.priority == 'urgent' %}danger{% elif project.priority == 'high' %}warning{% elif project.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                        {{ project.get_priority_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge badge-{% if project.status == 'completed' %}success{% elif project.status == 'active' %}warning{% elif project.status == 'on_hold' %}info{% else %}secondary{% endif %}">
+                                        {{ project.get_status_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Due Date:</strong></td>
+                                <td>
+                                    {% if project.due_date %}
+                                        {{ project.due_date|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        <span class="text-muted">No due date</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Created:</strong></td>
+                                <td>{{ project.created_at|date:"M d, Y H:i" }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Description</h5>
+                        <p>{{ project.description|default:"No description provided." }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tasks Section -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title">Project Tasks ({{ tasks.count }})</h5>
+            </div>
+            <div class="card-body">
+                {% if tasks %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Assigned To</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in tasks %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ task.title }}</strong>
+                                        {% if task.description %}
+                                            <br><small class="text-muted">{{ task.description|truncatewords:5 }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if task.assigned_to %}
+                                            {{ task.assigned_to.username }}
+                                        {% else %}
+                                            <span class="text-muted">Unassigned</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-{% if task.priority == 'urgent' %}danger{% elif task.priority == 'high' %}warning{% elif task.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                            {{ task.get_priority_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% elif task.status == 'review' %}info{% else %}secondary{% endif %}">
+                                            {{ task.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if task.due_date %}
+                                            {{ task.due_date|date:"M d, Y" }}
+                                        {% else %}
+                                            <span class="text-muted">No due date</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No tasks in this project yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <!-- Members Section -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Project Members</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6>Owner</h6>
+                    <span class="badge badge-primary">{{ project.owner.username }}</span>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Members ({{ project.members.count }})</h6>
+                    {% if project.members.all %}
+                        {% for member in project.members.all %}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge badge-secondary">{{ member.username }}</span>
+                                <form method="post" action="{% url 'aurora_store:remove_member' project.id member.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove {{ member.username }} from project?')">
+                                        Remove
+                                    </button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No members yet.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Invite User Form -->
+                <div class="mt-4">
+                    <h6>Invite User by Email</h6>
+                    <form method="post" action="{% url 'aurora_store:invite_user' project.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" placeholder="Enter user email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Invite User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

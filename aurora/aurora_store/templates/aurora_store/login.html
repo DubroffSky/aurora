@@ -1,6 +1,6 @@
 {% extends 'aurora_store/base.html' %}
 
-{% block title %}Login - Aurora Store{% endblock %}
+{% block title %}Login - Aurora Project{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -23,7 +23,7 @@
                                 <div class="form-text">{{ field.help_text }}</div>
                             {% endif %}
                             {% if field.errors %}
-                                <div class="alert alert-danger mt-1">
+                                <div style="color: red; margin-top: 0.25rem;">
                                     {% for error in field.errors %}
                                         <small>{{ error }}</small>
                                     {% endfor %}
@@ -32,13 +32,13 @@
                         </div>
                     {% endfor %}
                     
-                    <div class="d-grid gap-2">
+                    <div style="margin-top: 1rem;">
                         <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </form>
                 
                 <hr>
-                <p class="text-center mb-0">
+                <p class="text-center">
                     No account? 
                     <a href="{% url 'aurora_store:register' %}" class="text-decoration-none">Sign up</a>
                 </p>
