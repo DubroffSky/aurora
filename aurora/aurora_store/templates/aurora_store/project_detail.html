@@ -20,32 +20,6 @@
                                 <td>{{ project.owner.username }}</td>
                             </tr>
                             <tr>
-                                <td><strong>Priority:</strong></td>
-                                <td>
-                                    <span class="badge badge-{% if project.priority == 'urgent' %}danger{% elif project.priority == 'high' %}warning{% elif project.priority == 'medium' %}info{% else %}secondary{% endif %}">
-                                        {{ project.get_priority_display }}
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Status:</strong></td>
-                                <td>
-                                    <span class="badge badge-{% if project.status == 'completed' %}success{% elif project.status == 'active' %}warning{% elif project.status == 'on_hold' %}info{% else %}secondary{% endif %}">
-                                        {{ project.get_status_display }}
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Due Date:</strong></td>
-                                <td>
-                                    {% if project.due_date %}
-                                        {{ project.due_date|date:"M d, Y H:i" }}
-                                    {% else %}
-                                        <span class="text-muted">No due date</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
                                 <td><strong>Created:</strong></td>
                                 <td>{{ project.created_at|date:"M d, Y H:i" }}</td>
                             </tr>
@@ -74,7 +48,6 @@
                                     <th>Assigned To</th>
                                     <th>Priority</th>
                                     <th>Status</th>
-                                    <th>Due Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,13 +76,7 @@
                                             {{ task.get_status_display }}
                                         </span>
                                     </td>
-                                    <td>
-                                        {% if task.due_date %}
-                                            {{ task.due_date|date:"M d, Y" }}
-                                        {% else %}
-                                            <span class="text-muted">No due date</span>
-                                        {% endif %}
-                                    </td>
+                                    
                                 </tr>
                                 {% endfor %}
                             </tbody>

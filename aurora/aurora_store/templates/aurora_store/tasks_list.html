@@ -20,8 +20,6 @@
                                 <th>Assigned To</th>
                                 <th>Priority</th>
                                 <th>Status</th>
-                                <th>Due Date</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,16 +51,7 @@
                                         {{ task.get_status_display }}
                                     </span>
                                 </td>
-                                <td>
-                                    {% if task.due_date %}
-                                        {{ task.due_date|date:"M d, Y H:i" }}
-                                        {% if task.is_overdue %}
-                                            <br><small style="color: red;">Overdue!</small>
-                                        {% endif %}
-                                    {% else %}
-                                        <span>No due date</span>
-                                    {% endif %}
-                                </td>
+                            
                                 <td>
                                     <a href="{% url 'aurora_store:task_edit' task.id %}" class="btn btn-outline-primary">Edit</a>
                                     <a href="{% url 'aurora_store:task_delete' task.id %}" class="btn btn-outline-danger">Delete</a>

@@ -4,13 +4,12 @@
 
 {% block content %}
 <div class="text-center">
-    <h1 class="display-4">Welcome to Aurora Project</h1>
+    <h1 class="display-4">Aurora</h1>
     <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">Team Project and Task Management System</p>
     
     {% if user.is_authenticated %}
-        <div class="alert alert-success">
-            <h4>Welcome back, {{ user.username }}!</h4>
-            <p>You can now manage your projects and tasks with your team.</p>
+        <div>
+            
         </div>
     {% else %}
         <div class="alert alert-info">
@@ -58,23 +57,5 @@
         </div>
     </div>
     
-    <div class="row" style="margin-top: 2rem;">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">👥 Team Collaboration</h5>
-                    <p class="card-text">Work together with your team members. Assign tasks, share project updates, and track collective progress.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">📊 Progress Tracking</h5>
-                    <p class="card-text">Monitor project progress, track task completion, and stay on top of deadlines with our intuitive dashboard.</p>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %} 
