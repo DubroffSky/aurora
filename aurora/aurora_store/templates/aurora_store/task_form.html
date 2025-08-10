@@ -91,11 +91,11 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="{{ form.due_date.id_for_label }}" class="form-label">{{ form.due_date.label }}</label>
-                        {{ form.due_date }}
+                        <label for="{{ form.deadline.id_for_label }}" class="form-label">{{ form.deadline.label }}</label>
+                        {{ form.deadline }}
                         {% if form.due_date.errors %}
                             <div style="color: red;">
-                                {% for error in form.due_date.errors %}
+                                {% for error in form.deadline.errors %}
                                     <small>{{ error }}</small>
                                 {% endfor %}
                             </div>

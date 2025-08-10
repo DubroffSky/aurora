@@ -45,7 +45,7 @@ class ProjectForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'project', 'assigned_to', 'priority', 'status',]
+        fields = ['title', 'description', 'project', 'assigned_to', 'priority', 'status', 'deadline']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter task title'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Enter task description'}),
@@ -53,7 +53,8 @@ class TaskForm(forms.ModelForm):
             'assigned_to': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-        }
+            'deadline': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }   
     
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

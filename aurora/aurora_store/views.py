@@ -186,41 +186,6 @@ def calendar_view(request):
     }
     return render(request, 'aurora_store/calendar.html', context)
 
-
-@login_required
-def calendar_events(request):
-    """API for getting calendar events (for Google Calendar integration)"""
-    start_date = request.GET.get('start')
-    end_date = request.GET.get('end')
-    
-    if start_date and end_date:
-        start = timezone.datetime.fromisoformat(start_date.replace('Z', '+00:00'))
-        end = timezone.datetime.fromisoformat(end_date.replace('Z', '+00:00'))
-        
-        tasks = Task.objects.filter(
-            models.Q(assigned_to=request.user) | 
-            models.Q(created_by=request.user) |
-            models.Q(project__owner=request.user) |
-            models.Q(project__members=request.user),
-            due_date__range=[start, end]
-        ).distinct()
-        
-        events = []
-        for task in tasks:
-            events.append({
-                'id': task.id,
-                'title': task.title,
-                'start': task.due_date.isoformat(),
-                'end': (task.due_date + timedelta(hours=1)).isoformat(),
-                'url': f'/tasks/{task.id}/edit/',
-                'className': f'priority-{task.priority} status-{task.status}',
-            })
-        
-        return JsonResponse(events, safe=False)
-    
-    return JsonResponse([], safe=False)
-
-
 # Project Management Views (Admin only)
 @login_required
 def projects_list(request):
