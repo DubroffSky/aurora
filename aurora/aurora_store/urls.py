@@ -16,7 +16,7 @@ urlpatterns = [
     path('tasks/<int:task_id>/edit/', views.task_edit, name='task_edit'),
     path('tasks/<int:task_id>/delete/', views.task_delete, name='task_delete'),
     path('calendar/', views.calendar_view, name='calendar'),
-    path('calendar/events/', views.calendar_events, name='calendar_events'),
+    path('calendar/events/', views.calendar_view, name='calendar_events'),
     
     # Project Management URLs (Admin only)
     path('projects/', views.projects_list, name='projects_list'),
