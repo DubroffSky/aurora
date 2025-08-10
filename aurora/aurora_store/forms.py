@@ -45,7 +45,7 @@ class ProjectForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'project', 'assigned_to', 'priority', 'status',]
+        fields = ['title', 'description', 'project', 'assigned_to', 'priority', 'status', 'deadline']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter task title'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Enter task description'}),
@@ -53,17 +53,41 @@ class TaskForm(forms.ModelForm):
             'assigned_to': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-        }
+            'deadline': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }   
     
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
-            # Show only projects where the user is the owner or a member
+            # Filter projects to show only owned by the user or where the user is a member
             self.fields['project'].queryset = Project.objects.filter(
                 models.Q(owner=user) | models.Q(members=user)
             ).distinct()
-            # Show only project members
-            self.fields['assigned_to'].queryset = User.objects.filter(
-                models.Q(owned_projects__members=user) | models.Q(member_projects__owner=user)
-            ).distinct() 
+
+            instance = kwargs.get('instance', None)
+            assigned_to = None
+            project = None
+            if instance:
+                assigned_to = getattr(instance, 'assigned_to', None)
+                project = getattr(instance, 'project', None)
+            # If user is the assigned user, remove all fields except status
+            if assigned_to and assigned_to == user:
+                for field in list(self.fields.keys()):
+                    if field != 'status':
+                        self.fields.pop(field)
+            else:
+                # If the user is not the assigned user, filter the assigned_to field
+                if not project:
+                    project_id = self.data.get('project') or self.initial.get('project')
+                    if project_id:
+                        try:
+                            project = Project.objects.get(pk=project_id)
+                        except Project.DoesNotExist:
+                            project = None
+                if project:
+                    members = project.members.all()
+                    users = User.objects.filter(pk=project.owner.pk) | members
+                    self.fields['assigned_to'].queryset = users.distinct()
+                else:
+                    self.fields['assigned_to'].queryset = User.objects.none()

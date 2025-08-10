@@ -20,6 +20,7 @@
                                 <th>Assigned To</th>
                                 <th>Priority</th>
                                 <th>Status</th>
+                                <th>Deadline</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,15 +48,67 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% elif task.status == 'review' %}info{% else %}secondary{% endif %}">
-                                        {{ task.get_status_display }}
-                                    </span>
+                                    <form method="post" action="{% url 'aurora_store:task_edit' task.id %}" class="status-form" style="display:inline;">
+                                        {% csrf_token %}
+                                        <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% elif task.status == 'review' %}info{% else %}secondary{% endif %} status-badge" data-task-id="{{ task.id }}">
+                                            {{ task.get_status_display }}
+                                        </span>
+                                        <select name="status" class="form-control status-select" data-task-id="{{ task.id }}" style="display:none; position:absolute; width:120px; min-width:0; max-width:120px;">
+                                            {% for value, label in status_choices %}
+                                                <option value="{{ value }}" {% if value == task.status %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
                                 </td>
-                            
                                 <td>
-                                    <a href="{% url 'aurora_store:task_edit' task.id %}" class="btn btn-outline-primary">Edit</a>
+                                    {% if task.deadline %}
+                                        {{ task.deadline|date:"Y-m-d" }}
+                                    {% else %}
+                                        <span class="text-muted">No deadline</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if request.user == task.created_by or request.user == task.project.owner %}
+                                        <a href="{% url 'aurora_store:task_edit' task.id %}" class="btn btn-outline-primary">Edit</a>
+                                    {% endif %}
                                     <a href="{% url 'aurora_store:task_delete' task.id %}" class="btn btn-outline-danger">Delete</a>
                                 </td>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.status-badge').forEach(function(badge) {
+        badge.addEventListener('mouseenter', function() {
+            var taskId = badge.getAttribute('data-task-id');
+            var select = document.querySelector('.status-select[data-task-id="' + taskId + '"]');
+            if (select) {
+                select.style.display = 'inline-block';
+                badge.style.display = 'none';
+                select.focus();
+            }
+        });
+    });
+    document.querySelectorAll('.status-select').forEach(function(select) {
+        select.addEventListener('mouseleave', function() {
+            var taskId = select.getAttribute('data-task-id');
+            var badge = document.querySelector('.status-badge[data-task-id="' + taskId + '"]');
+            if (badge) {
+                select.style.display = 'none';
+                badge.style.display = 'inline-block';
+            }
+        });
+        select.addEventListener('change', function() {
+            select.form.submit();
+        });
+        select.addEventListener('blur', function() {
+            var taskId = select.getAttribute('data-task-id');
+            var badge = document.querySelector('.status-badge[data-task-id="' + taskId + '"]');
+            if (badge) {
+                select.style.display = 'none';
+                badge.style.display = 'inline-block';
+            }
+        });
+    });
+});
+</script>
                             </tr>
                             {% endfor %}
                         </tbody>
