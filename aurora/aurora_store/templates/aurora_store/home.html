@@ -21,41 +21,5 @@
         </div>
     {% endif %}
     
-    <div class="row" style="margin-top: 2rem;">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">📋 Tasks</h5>
-                    <p class="card-text">Create, assign, and track tasks across your projects. Monitor progress and deadlines.</p>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'aurora_store:tasks_list' %}" class="btn btn-primary">View Tasks</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">🏗️ Projects</h5>
-                    <p class="card-text">Organize your work into projects. Manage team members, priorities, and project status.</p>
-                    {% if user.is_authenticated and user.is_staff %}
-                        <a href="{% url 'aurora_store:projects_list' %}" class="btn btn-primary">View Projects</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">📅 Calendar</h5>
-                    <p class="card-text">Visualize your tasks and deadlines in a calendar view for better planning.</p>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'aurora_store:calendar' %}" class="btn btn-primary">View Calendar</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    
 </div>
 {% endblock %} 
