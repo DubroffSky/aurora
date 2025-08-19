@@ -105,7 +105,6 @@ def task_create(request):
             messages.error(request, 'Please correct the errors in the form.')
     else:
         form = TaskForm(user=request.user)
-    
     return render(request, 'aurora_store/task_form.html', {'form': form, 'title': 'Create Task'})
 
 
