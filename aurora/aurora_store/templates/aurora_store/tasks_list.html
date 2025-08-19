@@ -8,7 +8,9 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">My Tasks</h3>
+                {% if request.user.is_staff %}
                 <a href="{% url 'aurora_store:task_create' %}" class="btn btn-primary">Create New Task</a>
+                {% endif %}
             </div>
             <div class="card-body">
                 {% if tasks %}
@@ -116,8 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 {% else %}
                     <div class="text-center">
                         <h4>No tasks found</h4>
+                        {% if request.user.is_staff %}
                         <p>Create your first task to get started!</p>
                         <a href="{% url 'aurora_store:task_create' %}" class="btn btn-primary">Create Task</a>
+                        {% else %}
+                        <p>There are no tasks assigned to you yet.</p>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
