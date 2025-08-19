@@ -76,10 +76,8 @@ def profile(request):
 def tasks_list(request):
     """User's tasks list"""
     tasks = Task.objects.filter(
-        models.Q(assigned_to=request.user) | 
-        models.Q(created_by=request.user) |
-        models.Q(project__owner=request.user) |
-        models.Q(project__members=request.user)
+        models.Q(assigned_to=request.user) |
+        models.Q(project__owner=request.user)
     ).distinct().select_related('project', 'assigned_to', 'created_by')
     
     context = {
