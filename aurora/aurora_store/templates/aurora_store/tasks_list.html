@@ -118,11 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 {% else %}
                     <div class="text-center">
                         <h4>No tasks found</h4>
-                        {% if request.user.is_staff %}
                         <p>Create your first task to get started!</p>
+                        {% if request.user.is_staff %}
                         <a href="{% url 'aurora_store:task_create' %}" class="btn btn-primary">Create Task</a>
-                        {% else %}
-                        <p>There are no tasks assigned to you yet.</p>
                         {% endif %}
                     </div>
                 {% endif %}

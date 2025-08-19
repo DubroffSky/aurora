@@ -105,6 +105,7 @@ def task_create(request):
             messages.error(request, 'Please correct the errors in the form.')
     else:
         form = TaskForm(user=request.user)
+    
     return render(request, 'aurora_store/task_form.html', {'form': form, 'title': 'Create Task'})
 
 
@@ -153,42 +154,12 @@ def task_delete(request, task_id):
     return render(request, 'aurora_store/task_confirm_delete.html', {'task': task})
 
 
-@login_required
-def calendar_view(request):
-    """Calendar with tasks"""
-    # Get tasks for the current month
-    today = timezone.now()
-    start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    end_of_month = (start_of_month + timedelta(days=32)).replace(day=1) - timedelta(seconds=1)
-    
-    tasks = Task.objects.filter(
-        models.Q(assigned_to=request.user) | 
-        models.Q(created_by=request.user) |
-        models.Q(project__owner=request.user) |
-        models.Q(project__members=request.user),
-        due_date__range=[start_of_month, end_of_month]
-    ).distinct().select_related('project', 'assigned_to')
-    
-    # Group tasks by dates
-    calendar_data = {}
-    for task in tasks:
-        date_key = task.due_date.strftime('%Y-%m-%d')
-        if date_key not in calendar_data:
-            calendar_data[date_key] = []
-        calendar_data[date_key].append(task)
-    
-    context = {
-        'calendar_data': calendar_data,
-        'current_month': today.strftime('%B %Y'),
-        'start_of_month': start_of_month,
-        'end_of_month': end_of_month,
-    }
-    return render(request, 'aurora_store/calendar.html', context)
+# @login_required
 
 # Project Management Views (Admin only)
 @login_required
 def projects_list(request):
-    """Список проектов (только для админов)"""
+    """Список проектов (only for admins)"""
     if not request.user.is_staff:
         messages.error(request, 'You do not have permission to view projects.')
         return redirect('aurora_store:home')
