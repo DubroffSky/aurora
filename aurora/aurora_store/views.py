@@ -39,9 +39,6 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-def home(request):
-    """Main page"""
-    return render(request, 'aurora_store/home.html')
 
 def register(request):
     """View for user registration"""
