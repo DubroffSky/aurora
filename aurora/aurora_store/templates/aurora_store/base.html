@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Aurora Project{% endblock %}</title>
+    <title>{% block title %}Aurora{% endblock %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,6 +30,7 @@
         .navbar-brand {
             font-size: 1.5rem;
             font-weight: bold;
+            
             color: white;
             text-decoration: none;
         }
@@ -49,13 +50,33 @@
             color: white;
             text-decoration: none;
             padding: 0.5rem 1rem;
+            position: relative;
+            transition: color 0.2s;
         }
         
         .nav-link:hover {
-            background-color: #555;
             border-radius: 3px;
         }
         
+        .nav-link::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 1rem;
+            right: 1rem;
+            bottom: 0.3rem;
+            height: 1px;
+            background: #fff;
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus::after {
+            transform: scaleX(1);
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -126,11 +147,10 @@
         .btn-outline-danger {
             background-color: transparent;
             color: #dc3545;
-            border: 1px solid #dc3545;
         }
         
         .btn-outline-danger:hover {
-            background-color: #dc3545;
+            background-color: #eb142aa8;
             color: white;
         }
         
@@ -153,22 +173,25 @@
         .card {
             background-color: white;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 16px;
             margin-bottom: 1rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .card-header {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             padding: 1rem;
             border-bottom: 1px solid #ddd;
+            box-shadow: #c2c2c2bd 0px 2px 6px -2px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 16px;
         }
         
         .card-body {
             padding: 1rem;
+            border-radius: 16px;
         }
         
         .card-title {
@@ -214,7 +237,7 @@
         }
         
         .table th {
-            background-color: #f8f9fa;
+            background-color: #f8f9fa00;
             padding: 0.75rem 0.5rem;
             border-bottom: 2px solid #ddd;
             text-align: left;
@@ -228,7 +251,7 @@
         }
         
         .table tbody tr:hover {
-            background-color: #f8f9fa;
+            background-color: #f8f9fa71;
         }
         
         .badge {
@@ -271,6 +294,7 @@
         
         .d-grid {
             display: grid;
+            width: 10em;
         }
         
         .gap-2 {
@@ -295,7 +319,7 @@
         .col-md-6 {
             flex: 0 0 50%;
         }
-        
+
         .col-md-8 {
             flex: 0 0 66.666667%;
         }
@@ -323,7 +347,7 @@
         }
         
         .navbar-text {
-            color: white;
+            color: rgba(255, 255, 255, 0.829);
         }
         
         hr {
@@ -376,14 +400,11 @@
 <body>
     <nav class="navbar">
         <div class="navbar-container">
-            <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora Project</a>
+            <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora</a>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <span class="navbar-text">Hello, {{ user.username }}!</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'aurora_store:home' %}">Main</a>
+                        
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'aurora_store:tasks_list' %}">Tasks</a>
