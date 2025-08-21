@@ -30,6 +30,7 @@
         .navbar-brand {
             font-size: 1.5rem;
             font-weight: bold;
+            
             color: white;
             text-decoration: none;
         }
@@ -49,13 +50,33 @@
             color: white;
             text-decoration: none;
             padding: 0.5rem 1rem;
+            position: relative;
+            transition: color 0.2s;
         }
         
         .nav-link:hover {
-            background-color: #555;
             border-radius: 3px;
         }
         
+        .nav-link::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 1rem;
+            right: 1rem;
+            bottom: 0.3rem;
+            height: 2px;
+            background: #fff;
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus::after {
+            transform: scaleX(1);
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -153,7 +174,7 @@
         .card {
             background-color: white;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 16px;
             margin-bottom: 1rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -165,10 +186,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 16px;
         }
         
         .card-body {
             padding: 1rem;
+            border-radius: 16px;
         }
         
         .card-title {
@@ -214,7 +237,7 @@
         }
         
         .table th {
-            background-color: #f8f9fa;
+            background-color: #f8f9fa00;
             padding: 0.75rem 0.5rem;
             border-bottom: 2px solid #ddd;
             text-align: left;
@@ -323,7 +346,7 @@
         }
         
         .navbar-text {
-            color: white;
+            color: rgba(255, 255, 255, 0.829);
         }
         
         hr {
