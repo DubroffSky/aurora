@@ -1,3 +1,23 @@
+from .profile_form import ProfileForm
+from django.contrib.auth.decorators import login_required
+# Profile settings view
+@login_required
+def profile_settings(request):
+    # Ensure user has a profile
+    profile, created = getattr(request.user, 'profile', None), False
+    if profile is None:
+        from .models import Profile
+        profile = Profile.objects.create(user=request.user)
+        created = True
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('aurora_store:profile')
+    else:
+        form = ProfileForm(instance=profile, user=request.user)
+    return render(request, 'aurora_store/profile_settings.html', {'form': form})
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
