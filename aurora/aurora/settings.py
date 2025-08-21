@@ -47,6 +47,22 @@ INSTALLED_APPS = [
 
 MEDIA_URL = 'media/'
 
+JET_DEFAULT_THEME = 'default'
+JET_THEMES = [
+    {
+        'theme': 'default',
+        'color': '#007bff',
+        'title': 'Default'
+    },
+    {
+        'theme': 'light',
+        'color': '#f8f9fa',
+    },
+    {
+        'theme': 'dark',
+        'color': '#343a40',
+    }
+]
 MEDIA_ROOT = BASE_DIR / 'media/'
 
 MIDDLEWARE = [
@@ -61,7 +77,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'aurora.urls'
 
+STATIC_ROOT = BASE_DIR / 'static/'
 TEMPLATES = [
+
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],

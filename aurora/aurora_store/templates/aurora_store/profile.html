@@ -12,12 +12,19 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>User information</h5>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Username:</strong></td>
-                                <td>{{ user.username }}</td>
-                            </tr>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            {% if user.profile.photo %}
+                                <img src="{{ user.profile.photo.url }}" alt="Avatar" style="width: 64px; height: 64px; object-fit: cover; border-radius: 50%; border: 2px solid #ddd;">
+                            {% else %}
+                                <div style="width: 64px; height: 64px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #888; border: 2px solid #ddd;">
+                                    {{ user.username|slice:":1"|upper }}
+                                </div>
+                            {% endif %}
+                            <div>
+                                <strong>{{ user.username }}</strong>
+                            </div>
+                        </div>
+                        <table class="table" style="margin-top: 16px;">
                             <tr>
                                 <td><strong>Email:</strong></td>
                                 <td>{{ user.email|default:"Not specified" }}</td>
@@ -39,12 +46,15 @@
                                         <span class="badge badge-success">User</span>
                                     {% endif %}
                                 </td>
-                            </tr>
+                            
                         </table>
                     </div>
                     <div class="col-md-6">
                         <h5>Actions</h5>
                         <div class="d-grid gap-2">
+                            <a href="{% url 'aurora_store:profile_settings' %}" class="btn btn-outline-secondary">
+                                Profile Settings
+                            </a>
                             <a href="{% url 'aurora_store:home' %}" class="btn btn-outline-primary">
                                 Return to main
                             </a>

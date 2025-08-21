@@ -9,6 +9,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('profile/', views.profile, name='profile'),
+    path('profile/settings/', views.profile_settings, name='profile_settings'),
     
     # TaskFlow URLs
     path('tasks/', views.tasks_list, name='tasks_list'),
