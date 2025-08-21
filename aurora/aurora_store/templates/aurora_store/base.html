@@ -65,7 +65,7 @@
             left: 1rem;
             right: 1rem;
             bottom: 0.3rem;
-            height: 2px;
+            height: 1px;
             background: #fff;
             transform: scaleX(0);
             transition: transform 0.3s cubic-bezier(.4,0,.2,1);
@@ -147,11 +147,10 @@
         .btn-outline-danger {
             background-color: transparent;
             color: #dc3545;
-            border: 1px solid #dc3545;
         }
         
         .btn-outline-danger:hover {
-            background-color: #dc3545;
+            background-color: #eb142aa8;
             color: white;
         }
         
@@ -251,7 +250,7 @@
         }
         
         .table tbody tr:hover {
-            background-color: #f8f9fa;
+            background-color: #f8f9fa71;
         }
         
         .badge {
@@ -402,9 +401,6 @@
             <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora Project</a>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text">Hello, {{ user.username }}!</span>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'aurora_store:home' %}">Main</a>
                     </li>
