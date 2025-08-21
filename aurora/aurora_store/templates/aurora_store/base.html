@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Aurora Project{% endblock %}</title>
+    <title>{% block title %}Aurora{% endblock %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -400,7 +400,7 @@
 <body>
     <nav class="navbar">
         <div class="navbar-container">
-            <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora Project</a>
+            <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora</a>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">

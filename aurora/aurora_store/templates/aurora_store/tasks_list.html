@@ -50,7 +50,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                        {% if request.user == task.assigned_to or request.user == task.project.owner %}
+                                        {% if request.user == task.assigned_to %}
                                         <form method="post" action="{% url 'aurora_store:task_edit' task.id %}" class="status-form" style="display:inline;">
                                             {% csrf_token %}
                                             <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% elif task.status == 'review' %}info{% else %}secondary{% endif %} status-badge" data-task-id="{{ task.id }}">
