@@ -66,16 +66,9 @@ class TaskForm(forms.ModelForm):
             ).distinct()
 
             instance = kwargs.get('instance', None)
-            assigned_to = None
             project = None
             if instance:
-                assigned_to = getattr(instance, 'assigned_to', None)
                 project = getattr(instance, 'project', None)
-            # If user is the assigned user, remove all fields except status
-            if assigned_to and assigned_to == user:
-                for field in list(self.fields.keys()):
-                    if field != 'status':
-                        self.fields.pop(field)
             else:
                 # If the user is not the assigned user, filter the assigned_to field
                 if not project:
