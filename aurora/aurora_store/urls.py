@@ -14,6 +14,7 @@ urlpatterns = [
     # TaskFlow URLs
     path('tasks/', views.tasks_list, name='tasks_list'),
     path('tasks/create/', views.task_create, name='task_create'),
+    path('tasks/<int:task_id>/', views.task_view, name='task_view'),
     path('tasks/<int:task_id>/edit/', views.task_edit, name='task_edit'),
     path('tasks/<int:task_id>/delete/', views.task_delete, name='task_delete'),
     
