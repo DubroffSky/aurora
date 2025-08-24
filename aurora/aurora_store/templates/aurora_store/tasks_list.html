@@ -79,6 +79,8 @@
                                     {% if request.user == task.created_by or request.user == task.project.owner %}
                                         <a href="{% url 'aurora_store:task_edit' task.id %}" class="btn btn-outline-primary">Edit</a>
                                     {% endif %}
+
+                                    <a href="{% url 'aurora_store:task_view' task.id %}" class="btn btn-outline-secondary">View</a>
                                     <a href="{% url 'aurora_store:task_delete' task.id %}" class="btn btn-outline-danger" title="Delete">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="vertical-align: middle;">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 7h12M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2m2 0v12a2 2 0 01-2 2H8a2 2 0 01-2-2V7h12z" />

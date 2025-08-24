@@ -123,6 +123,19 @@ def task_create(request):
     
     return render(request, 'aurora_store/task_form.html', {'form': form, 'title': 'Create Task'})
 
+@login_required
+def task_view(request, task_id):
+    """View task details (readonly)"""
+    task = get_object_or_404(Task, id=task_id)
+    context = {
+        'title': task.title,
+        'description': task.description,
+        'project_name': task.project.title if task.project else '',
+        'priority_display': task.get_priority_display() if hasattr(task, 'get_priority_display') else task.priority,
+        'status_display': task.get_status_display() if hasattr(task, 'get_status_display') else task.status,
+        'deadline': task.deadline,
+    }
+    return render(request, 'aurora_store/task_view.html', context)
 
 @login_required
 def task_edit(request, task_id):
