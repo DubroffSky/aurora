@@ -17,41 +17,6 @@
 
 **Aurora** is a comprehensive web-based project management system built with Django that transforms how teams organize, track, and execute their work. This platform combines powerful task management capabilities with intuitive project organization, making it an ideal solution for development teams, marketing agencies, and any organization seeking to improve their workflow efficiency.
 
-## Key Features
-
-### **Advanced Task Management**
-- Create, assign, and track tasks with detailed descriptions
-- Priority levels (Low, Medium, High, Urgent) for effective prioritization
-- Status tracking (To Do, In Progress, Review, Completed)
-- Due date management with calendar integration
-- Task assignment to team members
-
-### **Project Organization**
-- Create and manage multiple projects
-- Project priority and status management
-- Team member invitation and management
-- Project progress tracking and analytics
-- Hierarchical organization of tasks within projects
-
-### **Team Collaboration**
-- User registration and authentication system
-- Role-based access control
-- Team member management within projects
-- Task assignment and ownership tracking
-- Collaborative project workspaces
-
-### **Calendar Integration**
-- Visual calendar view of all tasks and deadlines
-- Interactive calendar interface
-- Deadline tracking and notifications
-- Project timeline visualization
-
-### **Security & User Management**
-- Secure user authentication and authorization
-- User profile management
-- Session management and logout functionality
-- Protected routes and views
-
 ---
 
 ## Technology Stack
