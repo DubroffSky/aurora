@@ -361,6 +361,24 @@
             color: #6c757d;
         }
         
+        .burger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+        .burger span {
+            height: 4px;
+            width: 100%;
+            background: #fff;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
         @media screen and (max-width: 768px) {
             .col-md-4, .col-md-6, .col-md-8, .col-md-12 {
                 flex: 0 0 100%;
@@ -380,7 +398,7 @@
                 margin-left: 0;
             }
 
-            /* Скрыть project, assigned to и deadline в списке задач на мобильных */
+            
             .tasks-list-hide-mobile {
                 display: none !important;
             }
@@ -399,14 +417,35 @@
             .table td {
                 padding: 0.5rem 0.25rem;
             }
+
+            .burger {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .navbar-nav {
+                display: none;
+            }
+            .navbar-nav.active {
+                display: flex;
+            }
         }
+            
+        
     </style>
 </head>
 <body>
+
     <nav class="navbar">
         <div class="navbar-container">
             <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora</a>
-            <ul class="navbar-nav">
+            <div class="burger" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="navbar-nav" id="navbarNav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         
@@ -451,5 +490,13 @@
         {% block content %}
         {% endblock %}
     </div>
+</body>
+<script>
+    const burger = document.getElementById('burger-menu');
+    const nav = document.getElementById('navbarNav');
+    burger.addEventListener('click', function() {
+        nav.classList.toggle('active');
+    });
+</script>
 </body>
 </html> 
