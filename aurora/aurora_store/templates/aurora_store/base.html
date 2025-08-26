@@ -361,7 +361,7 @@
             color: #6c757d;
         }
         
-        @media (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             .col-md-4, .col-md-6, .col-md-8, .col-md-12 {
                 flex: 0 0 100%;
             }
@@ -378,6 +378,11 @@
             
             .nav-item {
                 margin-left: 0;
+            }
+
+            /* Скрыть project, assigned to и deadline в списке задач на мобильных */
+            .tasks-list-hide-mobile {
+                display: none !important;
             }
             
             .card-header {

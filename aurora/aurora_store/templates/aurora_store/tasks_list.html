@@ -18,11 +18,11 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Project</th>
-                                <th>Assigned To</th>
+                                <th class="tasks-list-hide-mobile">Project</th>
+                                <th class="tasks-list-hide-mobile">Assigned To</th>
                                 <th>Priority</th>
                                 <th>Status</th>
-                                <th>Deadline</th>
+                                <th class="tasks-list-hide-mobile">Deadline</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,10 +34,10 @@
                                         <br><small>{{ task.description|truncatewords:10 }}</small>
                                     {% endif %}
                                 </td>
-                                <td>
+                                <td class="tasks-list-hide-mobile">
                                     <span class="badge badge-info">{{ task.project.title }}</span>
                                 </td>
-                                <td>
+                                <td class="tasks-list-hide-mobile">
                                     {% if task.assigned_to %}
                                         {{ task.assigned_to.username }}
                                     {% else %}
@@ -54,7 +54,7 @@
                                         {{ task.get_status_display }}
                                     </span>
                                 </td>
-                                <td>
+                                <td class="tasks-list-hide-mobile">
                                     {% if task.deadline %}
                                         {{ task.deadline|date:"Y-m-d" }}
                                     {% else %}
