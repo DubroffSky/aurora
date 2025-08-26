@@ -25,6 +25,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .navbar-brand {
@@ -40,6 +41,7 @@
             list-style: none;
             margin: 0;
             padding: 0;
+            transition: right 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s;
         }
         
         .nav-item {
@@ -369,6 +371,11 @@
             width: 32px;
             height: 32px;
             cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1002;
         }
         .burger span {
             height: 4px;
@@ -383,52 +390,58 @@
             .col-md-4, .col-md-6, .col-md-8, .col-md-12 {
                 flex: 0 0 100%;
             }
-            
             .navbar-container {
-                flex-direction: column;
-                gap: 1rem;
+                flex-direction: row;
+                gap: 0;
             }
-            
+            .burger {
+                display: flex;
+            }
             .navbar-nav {
+                position: absolute;
+                top: 100%;
+                right: 1rem;
+                background: #333;
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 0;
+                min-width: 180px;
+                border-radius: 8px;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+                opacity: 0;
+                pointer-events: none;
+                transition: right 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+                z-index: 1001;
             }
-            
+            .navbar-nav.active {
+                opacity: 1;
+                pointer-events: auto;
+                right: 1rem;
+            }
             .nav-item {
-                margin-left: 0;
+                margin: 0;
+                border-bottom: 1px solid #444;
             }
-
-            
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+            .nav-link {
+                display: block;
+                padding: 1rem 1.5rem;
+            }
             .tasks-list-hide-mobile {
                 display: none !important;
             }
-            
             .card-header {
                 flex-direction: column;
                 gap: 1rem;
                 align-items: flex-start;
             }
-            
             .table {
                 font-size: 0.875rem;
             }
-            
             .table th,
             .table td {
                 padding: 0.5rem 0.25rem;
-            }
-
-            .burger {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-            .navbar-nav {
-                display: none;
-            }
-            .navbar-nav.active {
-                display: flex;
             }
         }
             
@@ -494,7 +507,20 @@
 <script>
     const burger = document.getElementById('burger-menu');
     const nav = document.getElementById('navbarNav');
-    burger.addEventListener('click', function() {
+    let navTimeout;
+    function openMenu() {
+        nav.classList.add('active');
+        clearTimeout(navTimeout);
+    }
+    function closeMenu() {
+        navTimeout = setTimeout(() => nav.classList.remove('active'), 150);
+    }
+    burger.addEventListener('mouseenter', openMenu);
+    burger.addEventListener('mouseleave', closeMenu);
+    nav.addEventListener('mouseenter', openMenu);
+    nav.addEventListener('mouseleave', closeMenu);
+    // Для тапа на мобильных
+    burger.addEventListener('click', function(e) {
         nav.classList.toggle('active');
     });
 </script>
