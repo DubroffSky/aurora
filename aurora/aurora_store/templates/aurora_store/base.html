@@ -6,16 +6,17 @@
     <title>{% block title %}Aurora{% endblock %}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            background-color: #f4f6fa;
         }
         
         .navbar {
-            background-color: #333;
+            background: #23408e;
             padding: 1rem 0;
             color: white;
+            box-shadow: 0 2px 8px rgba(35,64,142,0.08);
         }
         
         .navbar-container {
@@ -31,9 +32,9 @@
         .navbar-brand {
             font-size: 1.5rem;
             font-weight: bold;
-            
-            color: white;
+            color: #fff;
             text-decoration: none;
+            letter-spacing: 0.5px;
         }
         
         .navbar-nav {
@@ -49,16 +50,17 @@
         }
         
         .nav-link {
-            color: white;
+            color: #f3f3f3;
             text-decoration: none;
             padding: 0.5rem 1rem;
             position: relative;
-            transition: color 0.2s;
-            border-radius: 0px;
+            transition: color 0.2s, background 0.2s;
+            border-radius: 4px;
         }
         
         .nav-link:hover {
-            border-radius: 0px;
+            background: #2d4d9a;
+            color: #fff;
         }
         
         .nav-link::after {
@@ -68,11 +70,11 @@
             left: 1rem;
             right: 1rem;
             bottom: 0.3rem;
-            height: 1px;
-            background: #ffffff;
+            height: 2px;
+            background: #2d4d9a;
             transform: scaleX(0);
             transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-            border-radius: 0px;
+            border-radius: 2px;
         }
 
         .nav-link:hover::after,
@@ -97,27 +99,24 @@
         }
         
         .alert-success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
+            background-color: #eaf6ef;
+            border: 1px solid #b7e0c2;
+            color: #25643b;
         }
-        
         .alert-info {
-            background-color: #d1ecf1;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
+            background-color: #eaf0fa;
+            border: 1px solid #b7cbe0;
+            color: #23408e;
         }
-        
         .alert-danger {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
+            background-color: #faeaea;
+            border: 1px solid #e0b7b7;
+            color: #8e2323;
         }
-        
         .alert-warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
+            background-color: #faf7ea;
+            border: 1px solid #e0d6b7;
+            color: #8e7a23;
         }
         
         .btn {
@@ -132,44 +131,44 @@
         }
         
         .btn-primary {
-            background-color: #27c055c2;
-            color: white;
+            background: #23408e;
+            color: #fff;
+            border: none;
+            box-shadow: 0 2px 8px rgba(35,64,142,0.08);
         }
-        
         .btn-primary:hover {
-            background-color: #27c055c2;
+            background: #2d4d9a;
+            color: #fff;
         }
         
         .btn-outline-primary {
             background-color: transparent;
-            color: #535353;
-            border: 1px solid #27c055c2;
+            color: #23408e;
+            border: 1px solid #23408e;
         }
-        
         .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: white;
+            background: #23408e;
+            color: #fff;
         }
         
         .btn-outline-danger {
             background-color: transparent;
-            color: #dc3545;
+            color: #8e2323;
+            border: 1px solid #8e2323;
         }
-        
         .btn-outline-danger:hover {
-            background-color: #eb142aa8;
-            color: white;
+            background: #8e2323;
+            color: #fff;
         }
         
         .btn-outline-secondary {
             background-color: transparent;
-            color: #27c055c2;
-            border: 1px solid #6c757d;
+            color: #5a5a5a;
+            border: 1px solid #bdbdbd;
         }
-        
         .btn-outline-secondary:hover {
-            background-color: #27c055c2;
-            color: white;
+            background: #f4f6fa;
+            color: #23408e;
         }
         
         .btn-sm {
@@ -178,22 +177,22 @@
         }
         
         .card {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 16px;
+            background-color: #fff;
+            border: 1px solid #e3e6f0;
+            border-radius: 12px;
             margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(35,64,142,0.04);
         }
         
         .card-header {
-            background-color: #ffffff;
+            background-color: #dee2e9;
             padding: 1rem;
-            border-bottom: 1px solid #ddd;
-            box-shadow: #c2c2c2bd 0px 2px 6px -2px;
+            border-bottom: 1px solid #e3e6f0;
+            box-shadow: 0 2px 6px -2px #23408e11;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 16px;
+            border-radius: 12px 12px 0 0;
         }
         
         .card-body {
@@ -227,8 +226,8 @@
         
         .form-control:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: #23408e;
+            box-shadow: 0 0 0 0.2rem #23408e22;
         }
         
         .form-text {
@@ -258,7 +257,7 @@
         }
         
         .table tbody tr:hover {
-            background-color: #f8f9fa71;
+            background-color: #f4f6fa;
         }
         
         .badge {
@@ -271,24 +270,22 @@
         }
         
         .badge-success {
-            background-color: #28a745;
+            background-color: #23408e;
         }
-        
         .badge-warning {
-            background-color: #ffc107;
-            color: #212529;
+            background-color: #8e7a23;
+            color: #fff;
         }
-        
         .badge-info {
-            background-color: #17a2b8;
+            background-color: #5a5a5a;
+            color: #fff;
         }
-        
         .badge-danger {
-            background-color: #dc3545;
+            background-color: #8e2323;
         }
-        
         .badge-secondary {
-            background-color: #6c757d;
+            background-color: #bdbdbd;
+            color: #333;
         }
         
         .text-center {
