@@ -1,14 +1,13 @@
 from .profile_form import ProfileForm
 from django.contrib.auth.decorators import login_required
-# Profile settings view
+"""Profile settings view"""
 @login_required
 def profile_settings(request):
-    # Ensure user has a profile
+    # Ensure the user has a profile
     profile, created = getattr(request.user, 'profile', None), False
     if profile is None:
         from .models import Profile
         profile = Profile.objects.create(user=request.user)
-        created = True
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
@@ -80,7 +79,7 @@ def profile(request):
     return render(request, 'aurora_store/profile.html')
 
 
-# TaskFlow Views
+
 @login_required
 def tasks_list(request):
     """User's tasks list"""
@@ -134,7 +133,7 @@ def task_edit(request, task_id):
     """Edit task"""
     task = get_object_or_404(Task, id=task_id)
     
-    # Check access rights
+
     if not (request.user == task.created_by or 
             request.user == task.assigned_to or 
             request.user == task.project.owner or 
@@ -161,7 +160,7 @@ def task_delete(request, task_id):
     """Delete task"""
     task = get_object_or_404(Task, id=task_id)
     
-    # Check access rights
+
     if not (request.user == task.created_by or request.user == task.project.owner):
         messages.error(request, 'You do not have permission to delete this task.')
         return redirect('aurora_store:tasks_list')
@@ -174,9 +173,9 @@ def task_delete(request, task_id):
     return render(request, 'aurora_store/task_confirm_delete.html', {'task': task})
 
 
-# @login_required
 
-# Project Management Views (Admin only)
+
+
 @login_required
 def projects_list(request):
     """Список проектов (only for admins)"""
@@ -205,7 +204,7 @@ def project_create(request):
             project = form.save(commit=False)
             project.owner = request.user
             project.save()
-            form.save_m2m()  # Save many-to-many fields
+            form.save_m2m()
             messages.success(request, 'Project created successfully!')
             return redirect('aurora_store:projects_list')
         else:
