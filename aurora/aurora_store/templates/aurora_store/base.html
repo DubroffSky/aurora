@@ -513,21 +513,25 @@
 <script>
     const burger = document.getElementById('burger-menu');
     const nav = document.getElementById('navbarNav');
-    let navTimeout;
-    function openMenu() {
-        nav.classList.add('active');
-        clearTimeout(navTimeout);
-    }
-    function closeMenu() {
-        navTimeout = setTimeout(() => nav.classList.remove('active'), 150);
-    }
-    burger.addEventListener('mouseenter', openMenu);
-    burger.addEventListener('mouseleave', closeMenu);
-    nav.addEventListener('mouseenter', openMenu);
-    nav.addEventListener('mouseleave', closeMenu);
-    // Для тапа на мобильных
+
+    // Открытие/закрытие меню по клику на бургер
     burger.addEventListener('click', function(e) {
+        e.stopPropagation();
         nav.classList.toggle('active');
+    });
+
+    // Закрытие меню при клике вне меню
+    document.addEventListener('click', function(e) {
+        if (nav.classList.contains('active') && !nav.contains(e.target) && e.target !== burger) {
+            nav.classList.remove('active');
+        }
+    });
+
+    // Закрытие меню при клике по ссылке
+    nav.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+        });
     });
 </script>
 </body>
