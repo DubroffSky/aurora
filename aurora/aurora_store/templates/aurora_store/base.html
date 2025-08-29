@@ -514,20 +514,20 @@
     const burger = document.getElementById('burger-menu');
     const nav = document.getElementById('navbarNav');
 
-    // Открытие/закрытие меню по клику на бургер
+    // Open/Close menu on burger click
     burger.addEventListener('click', function(e) {
         e.stopPropagation();
         nav.classList.toggle('active');
     });
 
-    // Закрытие меню при клике вне меню
+    // Close menu when clicking outside of it
     document.addEventListener('click', function(e) {
         if (nav.classList.contains('active') && !nav.contains(e.target) && e.target !== burger) {
             nav.classList.remove('active');
         }
     });
 
-    // Закрытие меню при клике по ссылке
+    // Close menu when clicking on a link 
     nav.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             nav.classList.remove('active');
