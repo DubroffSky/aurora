@@ -6,8 +6,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Projects Management</h3>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0">Projects Management</h3>
                 <a href="{% url 'aurora_store:project_create' %}" class="btn btn-primary">New Project</a>
             </div>
             <div class="card-body">
@@ -17,7 +17,7 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Owner</th>
-                                <th>Members</th>
+                                <th>Tasks</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,21 +25,12 @@
                             <tr>
                                 <td>
                                     <strong>{{ project.title }}</strong>
-                                    {% if project.description %}
-                                        <br><small>{{ project.description|truncatewords:10 }}</small>
-                                    {% endif %}
                                 </td>
                                 <td>
-                                    <span class="badge badge-info">{{ project.owner.username }}</span>
+                                    <span class="badge black-color">{{ project.description }}</span>
                                 </td>
                                 <td>
-                                    {% if project.members.all %}
-                                        {% for member in project.members.all %}
-                                            <span class="badge badge-secondary">{{ member.username }}</span>
-                                        {% endfor %}
-                                    {% else %}
-                                        <span>No members yet</span>
-                                    {% endif %}
+                                    <span class="badge badge-primary black-color">{{ project.tasks.count }}</span>
                                 </td>
                                 <td class="text-right">
                                     <a href="{% url 'aurora_store:project_detail' project.id %}" class="btn btn-outline-info">View</a>

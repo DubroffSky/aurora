@@ -43,9 +43,21 @@ class ProjectForm(forms.ModelForm):
         fields = ['title', 'description', 'status',]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter project title'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Enter project description'}),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Enter project description (max 50 words)',
+                'maxlength': 500,
+            }),
             'status': forms.Select(attrs={'class': 'form-control'}),
         }
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description', '')
+        word_count = len(description.split())
+        if word_count > 50:
+            raise forms.ValidationError('Description must be 50 words or fewer.')
+        return description
 
 
 class TaskForm(forms.ModelForm):
