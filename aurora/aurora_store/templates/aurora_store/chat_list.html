@@ -1,0 +1,54 @@
+{% extends 'aurora_store/base.html' %}
+{% block title %}Чаты{% endblock %}
+{% block content %}
+<h2>Чаты</h2>
+<button id="new-chat-btn" style="margin-bottom:1em;">Новый чат с пользователем</button>
+
+<ul>
+        {% for chat in chats %}
+                <li>
+                        <a href="{% url 'aurora_store:chat_detail' chat.id %}">
+                                {% for user in chat.participants.all %}{% if user != request.user %}
+                                        {% if user.profile.photo %}
+                                                <img src="{{ user.profile.photo.url }}" alt="avatar" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> 
+                                        {% else %}
+                                                <span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ccc;vertical-align:middle;text-align:center;line-height:24px;">{{ user.username|slice:":1"|upper }}</span>
+                                        {% endif %}
+                                        {{ user.username }}
+                                {% endif %}{% endfor %}
+                        </a>
+                </li>
+        {% empty %}
+                <li>Нет чатов</li>
+        {% endfor %}
+</ul>
+
+<!-- Модальное окно -->
+<div id="user-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:2em;max-width:400px;width:90vw;border-radius:8px;max-height:80vh;overflow-y:auto;position:relative;">
+        <button onclick="document.getElementById('user-modal').style.display='none'" style="position:absolute;top:8px;right:8px;">✕</button>
+        <h3>Выберите пользователя</h3>
+        <ul style="list-style:none;padding:0;">
+            {% for user in users %}
+                {% if user != request.user %}
+                <li style="margin-bottom:0.7em;display:flex;align-items:center;">
+                    {% if user.profile.photo %}
+                        <img src="{{ user.profile.photo.url }}" alt="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:0.7em;">
+                    {% else %}
+                        <span style="display:inline-block;width:32px;height:32px;border-radius:50%;background:#ccc;text-align:center;line-height:32px;margin-right:0.7em;">{{ user.username|slice:":1"|upper }}</span>
+                    {% endif %}
+                    <span style="flex:1;">{{ user.username }}</span>
+                    <a href="{% url 'aurora_store:start_chat' user.id %}" style="margin-left:auto;" class="start-chat-link">Чат</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+document.getElementById('new-chat-btn').onclick = function() {
+    document.getElementById('user-modal').style.display = 'flex';
+};
+</script>
+{% endblock %}

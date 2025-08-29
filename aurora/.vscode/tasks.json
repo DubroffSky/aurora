@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "makemigrations aurora_store",
+			"type": "shell",
+			"command": "python ..\\manage.py makemigrations aurora_store",
+			"group": "build"
+		}
+	]
+}

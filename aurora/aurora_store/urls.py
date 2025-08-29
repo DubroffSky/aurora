@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import chat_views
 
 app_name = 'aurora_store'
 
@@ -25,4 +26,8 @@ urlpatterns = [
     path('projects/<int:project_id>/', views.project_detail, name='project_detail'),
     path('projects/<int:project_id>/invite/', views.invite_user, name='invite_user'),
     path('projects/<int:project_id>/remove-member/<int:user_id>/', views.remove_member, name='remove_member'),
-] 
+    # Chat URLs
+    path('chats/', chat_views.chat_list, name='chat_list'),
+    path('chats/<int:chat_id>/', chat_views.chat_detail, name='chat_detail'),
+    path('chats/start/<int:user_id>/', chat_views.start_chat, name='start_chat'),
+]

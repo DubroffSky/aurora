@@ -1,0 +1,27 @@
+{% extends 'aurora_store/base.html' %}
+{% block title %}Чат{% endblock %}
+{% block content %}
+<h2>Чат</h2>
+<div style="margin-bottom: 1em;">
+    <a href="{% url 'aurora_store:chat_list' %}">← К списку чатов</a>
+</div>
+<div class="chat-messages" style="border:1px solid #ccc; padding:1em; max-height:400px; overflow-y:auto;">
+    {% for message in messages %}
+    {% if message.sender == request.user %}
+    <div style="margin-bottom:0.5em;text-align:right;">
+    {% else %}
+    <div style="margin-bottom:0.5em;">
+    {% endif %}
+            <strong>{{ message.sender.username }}</strong>: {{ message.text }}<br>
+            <small>{{ message.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
+    {% empty %}
+        <div>Нет сообщений</div>
+    {% endfor %}
+</div>
+<form method="post" style="margin-top:1em;">
+    {% csrf_token %}
+    <textarea name="text" rows="2" style="width:100%;" required></textarea><br>
+    <button type="submit">Отправить</button>
+</form>
+{% endblock %}
