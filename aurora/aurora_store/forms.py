@@ -8,6 +8,12 @@ User = get_user_model()
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text='Required. Enter a valid email address.')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email == 'admin@admin.admin':
+            return email
+        return email
     
     class Meta:
         model = User
