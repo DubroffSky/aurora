@@ -11,35 +11,57 @@
                 <a href="{% url 'aurora_store:project_create' %}" class="btn btn-primary">New Project</a>
             </div>
             <div class="card-body">
+                <style>
+                .project-list { display: flex; flex-direction: column; gap: 1.2em; padding: 0; margin: 0; }
+                .project-card {
+                    background: #fff;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+                    padding: 1.2em 1.5em;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5em;
+                }
+                .project-card-header { display: flex; align-items: center; justify-content: space-between; }
+                .project-title { font-size: 1.2rem; font-weight: 600; color: #23408e; }
+                .project-meta { display: flex; gap: 1.5em; flex-wrap: wrap; margin-top: 0.3em; }
+                .project-meta span { font-size: 0.98rem; color: #444; }
+                .project-status { font-size: 0.95rem; font-weight: 500; border-radius: 4px; padding: 0.2em 0.7em; background: #eaf0fa; color: #23408e; margin-left: 0.5em; }
+                .project-owner { font-size: 0.95rem; color: #888; margin-left: 0.5em; }
+                .project-date { font-size: 0.93rem; color: #aaa; margin-left: 0.5em; }
+                .project-members { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 0.2em; }
+                .project-member { background: #f4f6fa; border-radius: 4px; padding: 0.2em 0.7em; font-size: 0.95rem; color: #23408e; }
+                .project-actions { margin-top: 0.7em; display: flex; gap: 0.7em; }
+                </style>
                 {% if projects %}
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Owner</th>
-                                <th>Tasks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for project in projects %}
-                            <tr>
-                                <td>
-                                    <strong>{{ project.title }}</strong>
-                                </td>
-                                <td>
-                                    <span class="badge black-color">{{ project.description }}</span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-primary black-color">{{ project.tasks.count }}</span>
-                                </td>
-                                <td class="text-right">
-                                    <a href="{% url 'aurora_store:project_detail' project.id %}" class="btn btn-outline-info">View</a>
-                                    <a href="{% url 'aurora_store:project_edit' project.id %}" class="btn btn-outline-primary">Edit</a>
-                                </td>                             
-                            </tr>
+                <div class="project-list">
+                    {% for project in projects %}
+                    <div class="project-card">
+                        <div class="project-card-header">
+                            <span class="project-title">{{ project.title }}</span>
+                            <div class="project-actions">
+                                <a href="{% url 'aurora_store:project_detail' project.id %}" class="btn btn-outline-info">View</a>
+                                <a href="{% url 'aurora_store:project_edit' project.id %}" class="btn btn-outline-primary">Edit</a>
+                            </div>
+                        </div>
+                        <div class="project-meta">
+                            <span><strong>Description:</strong> {{ project.description }}</span>
+                            <span><strong>Tasks:</strong> {{ project.tasks.count }}</span>
+                            <span class="project-status">{{ project.get_status_display }}</span>
+                            <span class="project-owner">Owner: {{ project.owner.username }}</span>
+                            <span class="project-date">Created: {{ project.created_at|date:"d.m.Y H:i" }}</span>
+                        </div>
+                        {% if project.members.exists %}
+                        <div class="project-members">
+                            <strong>Members:</strong>
+                            {% for member in project.members.all %}
+                                <span class="project-member">{{ member.username }}</span>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
                 {% else %}
                     <div class="text-center">
                         <h4>No projects found</h4>

@@ -38,9 +38,15 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 # TaskFlow Forms
 class ProjectForm(forms.ModelForm):
+    members = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        required=False,
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
+
     class Meta:
         model = Project
-        fields = ['title', 'description', 'status',]
+        fields = ['title', 'description', 'status', 'members']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter project title'}),
             'description': forms.Textarea(attrs={
