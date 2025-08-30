@@ -1,3 +1,9 @@
+from .models import Message
+
+def delete_admin_test_messages():
+    Message.objects.filter(text__startswith='Message from admin in chat').delete()
+
+delete_admin_test_messages()
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Chat, Message
@@ -8,7 +14,7 @@ User = get_user_model()
 @login_required
 def chat_list(request):
     chats = request.user.chats.all().order_by('-created_at')
-    # Найти пользователей из общих проектов
+    # Find users who share a project with the current user
     from django.db.models import Q
     user_projects = list(request.user.member_projects.all()) + list(request.user.owned_projects.all())
     users = User.objects.filter(
