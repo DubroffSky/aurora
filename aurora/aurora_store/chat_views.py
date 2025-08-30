@@ -14,7 +14,7 @@ User = get_user_model()
 @login_required
 def chat_list(request):
     chats = request.user.chats.all().order_by('-created_at')
-    # Найти пользователей из общих проектов
+    # Find users who share a project with the current user
     from django.db.models import Q
     user_projects = list(request.user.member_projects.all()) + list(request.user.owned_projects.all())
     users = User.objects.filter(
