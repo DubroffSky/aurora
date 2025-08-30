@@ -1,9 +1,4 @@
 from .models import Message
-
-def delete_admin_test_messages():
-    Message.objects.filter(text__startswith='Message from admin in chat').delete()
-
-delete_admin_test_messages()
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Chat, Message
