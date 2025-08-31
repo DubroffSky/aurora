@@ -1,7 +1,30 @@
-from .models import Message
+
+from django.http import JsonResponse, HttpResponseForbidden
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+
+@login_required
+@require_POST
+def delete_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id, sender=request.user)
+    message.delete()
+    return JsonResponse({'success': True})
+
+@login_required
+@require_POST
+def edit_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id, sender=request.user)
+    new_text = request.POST.get('text', '').strip()
+    if not new_text:
+        return JsonResponse({'success': False, 'error': 'Текст не может быть пустым'})
+    message.text = new_text
+    message.save()
+    return JsonResponse({'success': True, 'text': message.text})
+
 from .models import Chat, Message
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

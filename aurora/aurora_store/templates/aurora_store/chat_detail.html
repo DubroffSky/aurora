@@ -100,15 +100,21 @@
     </div>
     <div class="chat-messages" id="chat-messages">
         {% for message in messages %}
-            <div class="msg-row{% if message.sender == request.user %} me{% endif %}">
+            <div class="msg-row{% if message.sender == request.user %} me{% endif %}" data-message-id="{{ message.id }}">
                 {% if message.sender.profile.photo %}
                     <img src="{{ message.sender.profile.photo.url }}" class="msg-avatar" alt="avatar">
                 {% else %}
                     <span class="msg-avatar" style="background:#ccc;text-align:center;line-height:36px;">{{ message.sender.username|slice:":1"|upper }}</span>
                 {% endif %}
-                <div>
-                    <div class="msg-bubble">{{ message.text }}</div>
-                    <div class="msg-meta">{{ message.sender.username }} • {{ message.created_at|date:"d.m.Y H:i" }}</div>
+                <div style="position:relative;">
+                    <div class="msg-bubble" onclick="showMessageMenu(event, '{{ message.id }}', '{{ message.sender.id }}', '{{ request.user.id }}')">{{ message.text }}</div>
+                    <div class="msg-meta">{{ message.sender.username }} • {{ message.created_at|date:'d.m.Y H:i' }}</div>
+                    {% if message.sender == request.user %}
+                    <div class="msg-menu" id="msg-menu-{{ message.id }}" style="display:none;position:absolute;top:30px;right:0;z-index:10;background:#fff;border:1px solid #ccc;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;">
+                        <button type="button" onclick="editMessage('{{ message.id }}')" style="width:100%;border:none;background:none;padding:0.7em 1em;text-align:left;cursor:pointer;">Редактировать</button>
+                        <button type="button" onclick="deleteMessage('{{ message.id }}')" style="width:100%;border:none;background:none;padding:0.7em 1em;text-align:left;cursor:pointer;color:#c00;">Удалить</button>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}
@@ -127,5 +133,78 @@ window.onload = function() {
     var chatBox = document.getElementById('chat-messages');
     chatBox.scrollTop = chatBox.scrollHeight;
 };
+
+// Показывать меню для сообщения
+function showMessageMenu(event, messageId, senderId, userId) {
+    if (senderId !== userId) return;
+    event.stopPropagation();
+    // Скрыть все открытые меню
+    document.querySelectorAll('.msg-menu').forEach(function(menu) { menu.style.display = 'none'; });
+    var menu = document.getElementById('msg-menu-' + messageId);
+    if (menu) menu.style.display = 'block';
+    document.addEventListener('click', hideAllMenus, { once: true });
+}
+function hideAllMenus() {
+    document.querySelectorAll('.msg-menu').forEach(function(menu) { menu.style.display = 'none'; });
+}
+// Удаление сообщения через AJAX
+function deleteMessage(id) {
+    fetch(`/messages/${id}/delete/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCSRFToken(),
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelector(`[data-message-id="${id}"]`).remove();
+        }
+        hideAllMenus();
+    });
+}
+
+// Редактирование сообщения через prompt и AJAX
+function editMessage(id) {
+    const msgRow = document.querySelector(`[data-message-id="${id}"] .msg-bubble`);
+    const oldText = msgRow.textContent;
+    const newText = prompt('Изменить сообщение:', oldText);
+    if (newText === null || newText.trim() === '' || newText === oldText) {
+        hideAllMenus();
+        return;
+    }
+    fetch(`/messages/${id}/edit/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCSRFToken(),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `text=${encodeURIComponent(newText)}`
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            msgRow.textContent = data.text;
+        } else if (data.error) {
+            alert(data.error);
+        }
+        hideAllMenus();
+    });
+}
+
+// Получить CSRF-токен из cookie
+function getCSRFToken() {
+    let name = 'csrftoken=';
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return '';
+}
 </script>
 {% endblock %}
