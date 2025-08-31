@@ -1,44 +1,202 @@
 {% extends 'aurora_store/base.html' %}
-{% block title %}Чаты{% endblock %}
+{% block title %}Aurora- chats{% endblock %}
 {% block content %}
-<h2>Чаты</h2>
-<button id="new-chat-btn" style="margin-bottom:1em;">Новый чат с пользователем</button>
+<style>
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5em;
+}
+.chat-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+}
+#new-chat-btn {
+    background: #23408e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+    min-width: 140px;
+    min-height: 40px;
+    padding: 0.5rem 1.2rem;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+}
+#new-chat-btn:hover {
+    background: #357ae8;
+    box-shadow: 0 4px 16px rgba(79,140,255,0.15);
+}
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.chat-card {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 1em 1.2em;
+    transition: box-shadow 0.2s, transform 0.2s;
+    text-decoration: none;
+    color: #222;
+}
+.chat-card:hover {
+    box-shadow: 0 6px 24px rgba(79,140,255,0.13);
+    transform: translateY(-2px) scale(1.02);
+    background: #f7fbff;
+}
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1em;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #4f8cff;
+}
+.chat-participant {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.empty-chats {
+    color: #888;
+    text-align: center;
+    margin-top: 2em;
+}
+/* Modal styles */
+#user-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+#user-modal.active { display: flex; }
+.modal-content {
+    background: #fff;
+    padding: 2em;
+    max-width: 400px;
+    width: 90vw;
+    border-radius: 6px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+}
+.modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #888;
+}
+.user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.user-list-item {
+    margin-bottom: 0.7em;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    padding: 0.4em 0.5em;
+    transition: background 0.15s;
+}
+.user-list-item:hover {
+    background: #f2f7ff;
+}
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 0.7em;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4f8cff;
+}
+.start-chat-link {
+    margin-left: auto;
+    background: #4f8cff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.3em 1em;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.start-chat-link:hover {
+    background: #357ae8;
+}
+</style>
 
-<ul>
-        {% for chat in chats %}
-                <li>
-                        <a href="{% url 'aurora_store:chat_detail' chat.id %}">
-                                {% for user in chat.participants.all %}{% if user != request.user %}
-                                        {% if user.profile.photo %}
-                                                <img src="{{ user.profile.photo.url }}" alt="avatar" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> 
-                                        {% else %}
-                                                <span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ccc;vertical-align:middle;text-align:center;line-height:24px;">{{ user.username|slice:":1"|upper }}</span>
-                                        {% endif %}
-                                        {{ user.username }}
-                                {% endif %}{% endfor %}
-                        </a>
-                </li>
-        {% empty %}
-                <li>Нет чатов</li>
-        {% endfor %}
+<div class="chat-header">
+    <h2 class="chat-title">Chats</h2>
+    <button id="new-chat-btn">New chat</button>
+</div>
+
+<ul class="chat-list">
+    {% for chat in chats %}
+        <li>
+            <a href="{% url 'aurora_store:chat_detail' chat.id %}" class="chat-card">
+                {% for user in chat.participants.all %}{% if user != request.user %}
+                    {% if user.profile.photo %}
+                        <img src="{{ user.profile.photo.url }}" alt="avatar" class="chat-avatar">
+                    {% else %}
+                        <span class="chat-avatar">{{ user.username|slice:":1"|upper }}</span>
+                    {% endif %}
+                    <span class="chat-participant">{{ user.username }}</span>
+                {% endif %}{% endfor %}
+            </a>
+        </li>
+    {% empty %}
+        <li class="empty-chats">No chats yet</li>
+    {% endfor %}
 </ul>
 
-<!-- Модальное окно -->
-<div id="user-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:2em;max-width:400px;width:90vw;border-radius:8px;max-height:80vh;overflow-y:auto;position:relative;">
-        <button onclick="document.getElementById('user-modal').style.display='none'" style="position:absolute;top:8px;right:8px;">✕</button>
-        <h3>Выберите пользователя</h3>
-        <ul style="list-style:none;padding:0;">
+<div id="user-modal">
+    <div class="modal-content">
+        <button onclick="document.getElementById('user-modal').classList.remove('active')" class="modal-close">✕</button>
+        <h3 style="margin-top:0;">Select User</h3>
+        <ul class="user-list">
             {% for user in users %}
                 {% if user != request.user %}
-                <li style="margin-bottom:0.7em;display:flex;align-items:center;">
+                <li class="user-list-item">
                     {% if user.profile.photo %}
-                        <img src="{{ user.profile.photo.url }}" alt="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:0.7em;">
+                        <img src="{{ user.profile.photo.url }}" alt="avatar" class="user-avatar">
                     {% else %}
-                        <span style="display:inline-block;width:32px;height:32px;border-radius:50%;background:#ccc;text-align:center;line-height:32px;margin-right:0.7em;">{{ user.username|slice:":1"|upper }}</span>
+                        <span class="user-avatar">{{ user.username|slice:":1"|upper }}</span>
                     {% endif %}
                     <span style="flex:1;">{{ user.username }}</span>
-                    <a href="{% url 'aurora_store:start_chat' user.id %}" style="margin-left:auto;" class="start-chat-link">Чат</a>
+                    <a href="{% url 'aurora_store:start_chat' user.id %}" class="start-chat-link">Чат</a>
                 </li>
                 {% endif %}
             {% endfor %}
@@ -48,7 +206,7 @@
 
 <script>
 document.getElementById('new-chat-btn').onclick = function() {
-    document.getElementById('user-modal').style.display = 'flex';
+    document.getElementById('user-modal').classList.add('active');
 };
 </script>
 {% endblock %}

@@ -3,22 +3,27 @@
 {% block content %}
 <style>
 .chat-container {
-    max-width: 600px;
+    max-width: 900px;
+    width: 100%;
     margin: 0 auto;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 2px 16px rgba(35,64,142,0.08);
-    padding: 1.5em 1em 1em 1em;
+    padding: 1em 1em;
+    box-sizing: border-box;
 }
 .chat-messages {
     border: none;
     background: #f4f6fa;
     border-radius: 12px;
     padding: 1em;
-    max-height: 400px;
+    min-height: 400px;
+    max-height: 60vh;
+    height: 600px;
     overflow-y: auto;
     margin-bottom: 1em;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 .msg-row {
     display: flex;
@@ -29,7 +34,9 @@
     flex-direction: row-reverse;
 }
 .msg-bubble {
-    max-width: 70%;
+    max-width: 420px;
+    min-width: 48px;
+    width: fit-content;
     padding: 0.7em 1em;
     border-radius: 16px;
     background: #23408e;
@@ -38,6 +45,7 @@
     position: relative;
     word-break: break-word;
     font-size: 1em;
+    box-sizing: border-box;
 }
 .msg-row.me .msg-bubble {
     background: #e3eafd;
@@ -104,17 +112,17 @@
                 </div>
             </div>
         {% empty %}
-            <div style="text-align:center;color:#888;">Нет сообщений</div>
+            <div style="text-align:center;color:#888;">No messages</div>
         {% endfor %}
     </div>
     <form method="post" class="chat-form">
         {% csrf_token %}
-        <textarea name="text" rows="2" required placeholder="Введите сообщение..."></textarea>
-        <button type="submit">Отправить</button>
+        <textarea name="text" rows="2" required placeholder="Enter your message..."></textarea>
+        <button type="submit">Send</button>
     </form>
 </div>
 <script>
-// Прокрутка вниз при загрузке
+// Scroll to bottom on load
 window.onload = function() {
     var chatBox = document.getElementById('chat-messages');
     chatBox.scrollTop = chatBox.scrollHeight;

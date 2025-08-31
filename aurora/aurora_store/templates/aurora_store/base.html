@@ -17,6 +17,12 @@
             padding: 1rem 0;
             color: white;
             box-shadow: 0 2px 8px rgba(35,64,142,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        main, .container, .row {
+            margin-top: 84px;
         }
         
         .navbar-container {
@@ -80,6 +86,26 @@
         .nav-link:hover::after,
         .nav-link:focus::after {
             transform: scaleX(1);
+        }
+        
+        .badge-completed {
+            background-color: #28a745; /* зелёный */
+            color: #fff;
+        }
+
+        .badge-progress {
+            background-color: #1727b8; /* жёлтый */
+            color: #000;
+        }
+
+        .badge-review {
+            background-color: #d3a10c; /* голубой */
+            color: #fff;
+        }
+
+        .badge-default {
+            background-color: #949ca3; /* серый */
+            color: #fff;
         }
 
         .text-right {
@@ -185,7 +211,7 @@
         }
         
         .card-header {
-            background-color: #dee2e9;
+            background-color: #7d9bcc69;
             padding: 1rem;
             border-bottom: 1px solid #e3e6f0;
             box-shadow: 0 2px 6px -2px #23408e11;
@@ -470,7 +496,13 @@
             </div>
             <ul class="navbar-nav" id="navbarNav">
                 {% if user.is_authenticated %}
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'aurora_store:chat_list' %}" title="Чаты">
+                            <span style="font-size:1.3em;vertical-align:middle;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a3 3 0 003.22 0L22 8m-19 8V8a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                            </span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'aurora_store:tasks_list' %}">Tasks</a>
                     </li>
@@ -478,19 +510,11 @@
                     </li>
                     {% if user.is_staff %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'aurora_store:projects_list' %}">Projects</a>
+                        <a class="nav-link" href="{% url 'aurora_store:projects_list' %}">Teams</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'aurora_store:profile' %}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'aurora_store:chat_list' %}" title="Чаты">
-                            <span style="font-size:1.3em;vertical-align:middle;">
-                                <!-- mail icon SVG -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a3 3 0 003.22 0L22 8m-19 8V8a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-                            </span>
-                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'aurora_store:logout' %}">Logout</a>
