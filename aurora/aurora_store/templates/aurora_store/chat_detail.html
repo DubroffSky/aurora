@@ -112,17 +112,17 @@
                 </div>
             </div>
         {% empty %}
-            <div style="text-align:center;color:#888;">Нет сообщений</div>
+            <div style="text-align:center;color:#888;">No messages</div>
         {% endfor %}
     </div>
     <form method="post" class="chat-form">
         {% csrf_token %}
-        <textarea name="text" rows="2" required placeholder="Введите сообщение..."></textarea>
-        <button type="submit">Отправить</button>
+        <textarea name="text" rows="2" required placeholder="Enter your message..."></textarea>
+        <button type="submit">Send</button>
     </form>
 </div>
 <script>
-// Прокрутка вниз при загрузке
+// Scroll to bottom on load
 window.onload = function() {
     var chatBox = document.getElementById('chat-messages');
     chatBox.scrollTop = chatBox.scrollHeight;
