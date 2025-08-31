@@ -16,10 +16,8 @@
                 <div class="task-details mb-3">
                     <h5>Task Details:</h5>
                     <ul class="list-unstyled">
-                        <li><strong>Project:</strong> {{ task.project.title }}</li>
-                        {% if task.assigned_to %}
-                            <li><strong>Assigned to:</strong> {{ task.assigned_to.username }}</li>
-                        {% endif %}
+                        <li><strong>Team:</strong> {{ task.project.title }}</li>
+                        <li><strong>Assigned to:</strong> {{ task.assigned_to.username }}</li>
                         <li><strong>Priority:</strong> {{ task.get_priority_display }}</li>
                         <li><strong>Status:</strong> {{ task.get_status_display }}</li>
                         {% if task.due_date %}

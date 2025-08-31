@@ -106,5 +106,5 @@ class TaskForm(forms.ModelForm):
                     members = project.members.all()
                     users = User.objects.filter(pk=project.owner.pk) | members
                     self.fields['assigned_to'].queryset = users.distinct()
-                else:
-                    self.fields['assigned_to'].queryset = User.objects.none()
+                # else:
+                #     self.fields['assigned_to'].queryset = User.objects.none()

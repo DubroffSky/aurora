@@ -45,12 +45,21 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <span class="badge badge-{% if task.priority == 'urgent' %}danger{% elif task.priority == 'high' %}warning{% elif task.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                    <span class="badge 
+                                                {% if task.priority == 'urgent' %}badge-completed
+                                                {% elif task.priority == 'high' %}badge-danger
+                                                {% elif task.priority == 'medium' %}badge-review
+                                                {% else %}badge-info{% endif %}">
                                         {{ task.get_priority_display }}
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% elif task.status == 'review' %}info{% else %}secondary{% endif %} status-badge" data-task-id="{{ task.id }}">
+                                    <span class="badge 
+                                        {% if task.status == 'completed' %}badge-completed
+                                        {% elif task.status == 'in_progress' %}badge-progress
+                                        {% elif task.status == 'review' %}badge-review
+                                        {% else %}badge-default{% endif %}"
+                                        data-task-id="{{ task.id }}">
                                         {{ task.get_status_display }}
                                     </span>
                                 </td>
