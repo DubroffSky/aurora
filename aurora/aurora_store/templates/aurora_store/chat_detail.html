@@ -149,7 +149,6 @@ function hideAllMenus() {
 }
 // Удаление сообщения через AJAX
 function deleteMessage(id) {
-    if (!confirm('Удалить сообщение?')) return;
     fetch(`/messages/${id}/delete/`, {
         method: 'POST',
         headers: {
