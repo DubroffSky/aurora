@@ -1,5 +1,5 @@
 {% extends 'aurora_store/base.html' %}
-{% block title %}Чат{% endblock %}
+{% block title %}Chat{% endblock %}
 {% block content %}
 <style>
 .chat-container {
@@ -29,6 +29,31 @@
     display: flex;
     align-items: flex-end;
     margin-bottom: 0.7em;
+}
+.attach-btn {
+    font-size: 1.4em;
+    cursor: pointer;
+    padding: 0.3em;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.attach-btn:hover {
+    background: #f0f0f0;
+}
+
+/* кнопка отправки */
+.send-btn {
+    background: #23408e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.send-btn:hover {
+    background: #2d4d9a;
 }
 .msg-row.me {
     flex-direction: row-reverse;
@@ -100,19 +125,34 @@
     </div>
     <div class="chat-messages" id="chat-messages">
         {% for message in messages %}
-            <div class="msg-row{% if message.sender == request.user %} me{% endif %}" data-message-id="{{ message.id }}">
+            <div class="msg-row{% if message.sender == request.user %} me{% endif %}" data-message-id="{{ message.id }}"{% if message.sender == request.user %} onclick="showMessageMenu(event, '{{ message.id }}', '{{ message.sender.id }}', '{{ request.user.id }}')"{% endif %}>
                 {% if message.sender.profile.photo %}
                     <img src="{{ message.sender.profile.photo.url }}" class="msg-avatar" alt="avatar">
                 {% else %}
                     <span class="msg-avatar" style="background:#ccc;text-align:center;line-height:36px;">{{ message.sender.username|slice:":1"|upper }}</span>
                 {% endif %}
-                <div style="position:relative;">
-                    <div class="msg-bubble" onclick="showMessageMenu(event, '{{ message.id }}', '{{ message.sender.id }}', '{{ request.user.id }}')">{{ message.text }}</div>
+                    <div style="position:relative;">
+                        <div class="msg-bubble">
+                        {% if message.text %}
+                            <p>{{ message.text }}</p>
+                        {% endif %}
+
+                        {% if message.media %}
+                            {% if message.is_image %}
+                                <img src="{{ message.media.url }}" style="max-width:200px;border-radius:8px;">
+                            {% elif message.is_video %}
+                                <video controls style="max-width:200px;border-radius:8px;">
+                                    <source src="{{ message.media.url }}">
+                                    Your browser does not support video.
+                                </video>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                     <div class="msg-meta">{{ message.sender.username }} • {{ message.created_at|date:'d.m.Y H:i' }}</div>
                     {% if message.sender == request.user %}
                     <div class="msg-menu" id="msg-menu-{{ message.id }}" style="display:none;position:absolute;top:30px;right:0;z-index:10;background:#fff;border:1px solid #ccc;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;">
-                        <button type="button" onclick="editMessage('{{ message.id }}')" style="width:100%;border:none;background:none;padding:0.7em 1em;text-align:left;cursor:pointer;">Редактировать</button>
-                        <button type="button" onclick="deleteMessage('{{ message.id }}')" style="width:100%;border:none;background:none;padding:0.7em 1em;text-align:left;cursor:pointer;color:#c00;">Удалить</button>
+                        <button type="button" onclick="editMessage('{{ message.id }}')" style="width:100%;border:none;background:none;padding:0.7em 1em;text-align:left;cursor:pointer;">Edit</button>
+                        <button type="button" onclick="deleteMessage('{{ message.id }}')" style="width:100%;border:none;background:none;padding:0.7em 1em;text-align:left;cursor:pointer;color:#c00;">Delete</button>
                     </div>
                     {% endif %}
                 </div>
@@ -121,10 +161,12 @@
             <div style="text-align:center;color:#888;">No messages</div>
         {% endfor %}
     </div>
-    <form method="post" class="chat-form">
-        {% csrf_token %}
-        <textarea name="text" rows="2" required placeholder="Enter your message..."></textarea>
-        <button type="submit">Send</button>
+    <form method="post" enctype="multipart/form-data" class="chat-form">
+    {% csrf_token %}
+        <textarea name="text" rows="2" placeholder="Enter your message..."></textarea>
+        <input type="file" id="media-input" name="media" accept="image/*,video/*" style="display:none;">
+        <label for="media-input" class="attach-btn" title="file">🔗</label>
+        <button type="submit" class="send-btn">➤</button>
     </form>
 </div>
 <script>

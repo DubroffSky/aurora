@@ -67,9 +67,16 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     text = models.TextField()
+    media = models.FileField(upload_to='chat_media/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
+    def is_image(self):
+        return self.media and self.media.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+
+    def is_video(self):
+        return self.media and self.media.name.lower().endswith(('.mp4', '.mov', '.avi', '.webm'))
+    
 class Task(models.Model):
     PRIORITY_CHOICES = [
         ('low', 'Low'),
