@@ -1,5 +1,15 @@
 from .profile_form import ProfileForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, TaskForm, ProjectForm
+from .models import Task, Project
+from django.db import models
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth import get_user_model
 """Profile settings view"""
 @login_required
 def profile_settings(request):
@@ -17,16 +27,7 @@ def profile_settings(request):
     else:
         form = ProfileForm(instance=profile, user=request.user)
     return render(request, 'aurora_store/profile_settings.html', {'form': form})
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, TaskForm, ProjectForm
-from .models import Task, Project
-from django.db import models
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib.auth import get_user_model
+
 
 User = get_user_model()
 
