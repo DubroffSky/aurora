@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'aurora_store',
 ]
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 JET_DEFAULT_THEME = 'default'
 JET_THEMES = [

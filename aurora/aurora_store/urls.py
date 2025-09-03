@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from . import chat_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 app_name = 'aurora_store'
 
@@ -32,4 +34,4 @@ urlpatterns = [
     path('chats/start/<int:user_id>/', chat_views.start_chat, name='start_chat'),
     path('messages/<int:message_id>/delete/', chat_views.delete_message, name='delete_message'),
     path('messages/<int:message_id>/edit/', chat_views.edit_message, name='edit_message'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
