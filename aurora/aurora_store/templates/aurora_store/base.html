@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Aurora{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/aurora_icon.png' %}" type="image/png">
+    <link rel="shortcut icon" href="{% static 'img/aurora_icon.png' %}" type="image/png">
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -141,17 +144,17 @@
         }
 
         .badge-progress {
-            background-color: #1727b8; /* жёлтый */
+            background-color: #1727b8; 
             color: #000;
         }
 
         .badge-review {
-            background-color: #d3a10c; /* голубой */
+            background-color: #d3a10c; 
             color: #fff;
         }
 
         .badge-default {
-            background-color: #949ca3; /* серый */
+            background-color: #949ca3; 
             color: #fff;
         }
 
@@ -530,8 +533,7 @@
     </style>
 </head>
 <body>
-
-
+    
     <nav class="navbar">
         <div class="navbar-container">
             <a class="navbar-brand" href="{% url 'aurora_store:home' %}">Aurora</a>
