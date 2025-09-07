@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -30,7 +31,7 @@ SECRET_KEY = 'django-insecure-q61)-8^%!s&*_=r+pe3ws&!4=*(&zl_#gf$tmtoeq^dca!g)p8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'dpg-d2uvbhbe5dus73f6ctgg-a']
 
 
 # Application definition
@@ -101,24 +102,18 @@ WSGI_APPLICATION = 'aurora.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DB_NAME = os.getenv('DB_NAME')
-DB_USER = os.getenv('DB_USER')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-DB_URL = os.getenv('DB_URL')
-DB_PORT = os.getenv('DB_PORT')
+# DB_NAME = os.getenv('DB_NAME')
+# DB_USER = os.getenv('DB_USER')
+# DB_PASSWORD = os.getenv('DB_PASSWORD')
+# DB_URL = os.getenv('DB_URL')
+# DB_PORT = os.getenv('DB_PORT')
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "URL": DB_URL,
-        "PORT": DB_PORT,
-        "OPTIONS": {
-            "client_encoding": "UTF-8",
-        },
-    }
+    "default": dj_database_url.config(
+        env="DATABASE_URL", 
+        conn_max_age=600,
+        ssl_require=True       
+    )
 }
 
 
